@@ -14,3 +14,13 @@
     npm install -g @nestjs/cli   ---> command for creating nextjs project
     nest new my-first-package
 
+    npm install -g pnpm
+
+    pnpm install
+
+    pnpm build
+    
+    pnpm run start:dev
+    
+    pnpm run start:prod
+
