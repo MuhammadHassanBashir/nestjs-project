@@ -11,6 +11,6 @@
     nvm install v20.18.1  
     node -v  
     npm -v  
-    npm install -g @nestjs/cli  
+    npm install -g @nestjs/cli   ---> command for creating nextjs project
     nest new my-first-package
 
