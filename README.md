@@ -7,8 +7,7 @@
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash  
     wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash  
     source ~/.bashrc  
-    nvm ls-remote  
-    nvm install v20.9.0  
+    nvm ls-remote
     nvm install v20.18.1  
     node -v  
     npm -v  
