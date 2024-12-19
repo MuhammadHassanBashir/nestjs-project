@@ -1,0 +1,63 @@
+
+name: Deploy Frontend to Remote Server
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    # Step 1: Checkout Frontend code from repository
+    - name: Checkout Frontend Repository
+      uses: actions/checkout@v3
+
+    # Step 2: Install required tools and create a zip package
+    - name: Set Up Environment & Package Frontend
+      run: |
+        # Install dependencies
+        npm install
+
+        # Build the project(create dist)
+        npm run build-only
+
+        # Create a zip package of dist
+        zip -r frontend.zip dist/
+
+    # Step 3: Set up SSH agent with private key
+    - name: Set up SSH Key
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.DROPLET_PRIVATE_KEY }}
+
+    - name: Add Remote Server to known_hosts
+      run: ssh-keyscan -p 3222 139.59.48.90 >> ~/.ssh/known_hosts
+
+    # Step 4: Transfer the zip file to the remote server
+    - name: Upload Frontend Zip to Remote Server
+      run: |
+        scp -P 3222 ./frontend.zip muaaz@139.59.48.90:/home/muaaz/
+
+    # Step 5: Deploy the Frontend on the Remote Server
+    - name: Deploy Frontend on Remote Server
+      run: |
+        ssh -p 3222 muaaz@139.59.48.90 << 'EOF'
+          #!/bin/bash
+          echo "Starting Frontend Deployment..."
+
+          FRONTEND_PATH="/var/www/web"
+          FRONTEND_ZIP="/home/muaaz/frontend.zip"
+
+          # Deploy Frontend
+          cd $FRONTEND_PATH
+          sudo rm -rf assets/ favicon.ico img.png index.html
+          sudo mv $FRONTEND_ZIP $FRONTEND_PATH
+          sudo unzip -o frontend.zip
+          ls -lrt
+          sudo mv dist/* .
+          sudo rm -rf frontend.zip dist/
+        EOF
+
+    
