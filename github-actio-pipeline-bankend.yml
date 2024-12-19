@@ -50,7 +50,7 @@ jobs:
 
     # Step 7: Add Remote Server to known_hosts
     - name: Add Remote Server to known_hosts
-      run: ssh-keyscan -p 3222 139.59 >> ~/.ssh/known_hosts
+      run: ssh-keyscan -p 3222 139.59.48.90 >> ~/.ssh/known_hosts
 
     # Step 8: Transfer the zip file to the remote server
     - name: Upload Backend Zip to Remote Server
